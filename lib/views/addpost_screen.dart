@@ -110,8 +110,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ? const CircularProgressIndicator()
                 : ElevatedButton.icon(
                   onPressed: _handleSubmit,
-                  icon: const Icon(Icons.send),
-                  label: const Text("Post"),
+                  icon: const Icon(Icons.send, color: Colors.white),
+                  label: const Text(
+                    "Post",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     backgroundColor: Colors.blueGrey,

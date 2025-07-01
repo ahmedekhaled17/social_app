@@ -111,8 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 CircleAvatar(
                   radius: 60,
                   backgroundImage:
-                      photoProvider ??
-                      const AssetImage('assets/default_avatar.png'),
+                      photoProvider ?? const AssetImage('assets/default_avatar.png'),
                 ),
                 Positioned(
                   bottom: 0,
@@ -122,15 +121,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.blueGrey,
-                      child:
-                          _isUploadingImage
-                              ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                              : const Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                              ),
+                      child: _isUploadingImage
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                            ),
                     ),
                   ),
                 ),
@@ -144,7 +142,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 4),
             Text(user.email ?? '', style: TextStyle(color: Colors.grey[700])),
             const SizedBox(height: 16),
-
             Row(
               children: [
                 const Text(
@@ -165,56 +162,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             _isEditingBio
                 ? Column(
-                  children: [
-                    TextField(
-                      controller: _bioController,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                    children: [
+                      TextField(
+                        controller: _bioController,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Write something about yourself',
                         ),
-                        hintText: 'Write something about yourself',
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    _isSavingBio
-                        ? const CircularProgressIndicator()
-                        : Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isEditingBio = false;
-                                });
-                              },
-                              child: const Text('Cancel'),
+                      const SizedBox(height: 8),
+                      _isSavingBio
+                          ? const CircularProgressIndicator()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isEditingBio = false;
+                                    });
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: _saveBio,
+                                  child: const Text('Save'),
+                                ),
+                              ],
                             ),
-                            ElevatedButton(
-                              onPressed: _saveBio,
-                              child: const Text('Save'),
-                            ),
-                          ],
-                        ),
-                  ],
-                )
+                    ],
+                  )
                 : Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      _bioController.text.isEmpty
+                          ? 'No bio yet'
+                          : _bioController.text,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
-                  child: Text(
-                    _bioController.text.isEmpty
-                        ? 'No bio yet'
-                        : _bioController.text,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-
             const SizedBox(height: 24),
-
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -222,9 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-
             const SizedBox(height: 8),
-
             StreamBuilder<QuerySnapshot>(
               stream: _services.getUserPosts(),
               builder: (context, snapshot) {
@@ -235,14 +228,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return const Text('No posts found');
                 }
                 final posts = snapshot.data!.docs;
-
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
-                    final postData =
-                        posts[index].data()! as Map<String, dynamic>;
+                    final postData = posts[index].data()! as Map<String, dynamic>;
                     final postId = posts[index].id;
                     final postImageBase64 = postData['base64Image'] ?? '';
 
@@ -276,47 +267,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             StreamBuilder<QuerySnapshot>(
                               stream: _services.getPostComments(postId),
                               builder: (context, commentSnapshot) {
-                                if (commentSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
+                                if (commentSnapshot.connectionState == ConnectionState.waiting) {
+                                  return const Center(child: CircularProgressIndicator());
                                 }
-                                if (!commentSnapshot.hasData ||
-                                    commentSnapshot.data!.docs.isEmpty) {
+                                if (!commentSnapshot.hasData || commentSnapshot.data!.docs.isEmpty) {
                                   return const Text('No comments');
                                 }
                                 final comments = commentSnapshot.data!.docs;
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children:
-                                      comments.map((commentDoc) {
-                                        final comment =
-                                            commentDoc.data()!
-                                                as Map<String, dynamic>;
-                                        return ListTile(
-                                          dense: true,
-                                          contentPadding: EdgeInsets.zero,
-                                          leading: const Icon(
-                                            Icons.comment,
-                                            size: 18,
-                                            color: Colors.grey,
-                                          ),
-                                          title: Text(
-                                            comment['text'] ?? '',
+                                  children: comments.map((commentDoc) {
+                                    final comment = commentDoc.data()! as Map<String, dynamic>;
+                                    return ListTile(
+                                      dense: true,
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: const Icon(
+                                        Icons.comment,
+                                        size: 18,
+                                        color: Colors.grey,
+                                      ),
+                                      title: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            comment['username'] ?? 'Anonymous',
                                             style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 14,
                                             ),
                                           ),
-                                          subtitle: Text(
-                                            comment['userName'] ?? 'Anonymous',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey,
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              comment['comment'] ?? comment['text'] ?? '',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black87,
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                                 );
                               },
                             ),

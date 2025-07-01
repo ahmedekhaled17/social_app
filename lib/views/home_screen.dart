@@ -72,20 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamed(context, '/profile');
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Logout"),
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-            ),
-            const SizedBox(height: 6),
-            ListTile(
-              leading: const Icon(Icons.task),
-              title: const Text('Tasks'),
-              onTap: () => Navigator.pushReplacementNamed(context, '/task'),
-            ),
           ],
         ),
       ),
